@@ -81,10 +81,13 @@ export class MarcadoresComponent implements AfterViewInit {
       });
 
       this.guardarMarcadoresLocalStorage();
+
+      nuevoMarcador.on('dragend', () => {
+        this.guardarMarcadoresLocalStorage();
+      })
   }
 
   irMarcador( marker: mapboxgl.Marker ) {
-    console.log(marker);
     this.mapa.flyTo({
       center: marker.getLngLat()
     });
@@ -132,7 +135,17 @@ export class MarcadoresComponent implements AfterViewInit {
         color: m.color
       });
 
+      newMarker.on('dragend', () => {
+        this.guardarMarcadoresLocalStorage();
+      })
+
     })
+  }
+
+  borrarMarcador( i: number ) {
+    this.marcadores[i].marker?.remove();
+    this.marcadores.splice( i, 1 );
+    this.guardarMarcadoresLocalStorage();
   }
 
 }
